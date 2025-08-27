@@ -1,5 +1,5 @@
 import { User } from "@/types/user";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export const useUsers = (url: string) => {
     const [users, setUsers] = useState<User[] | null>(null);
@@ -13,6 +13,10 @@ export const useUsers = (url: string) => {
             console.error("Error fetching users:", error);
         }
     };
+
+    useEffect(() => {
+        fetchUsers();
+    }, [url])
 
 
     return { users, fetchUsers };

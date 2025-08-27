@@ -33,7 +33,7 @@ export default function RootLayout({
           className="min-h-full flex flex-col justify-between max-w-[1000px] mx-auto"
         >
           <Header />
-          <main className="flex-1 grid items-start grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-5">
+          <main className="flex-1 flex flex-col items-center py-5">
             {children}
           </main>
           <Footer />

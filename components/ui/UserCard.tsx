@@ -4,9 +4,14 @@ import React, { useState } from 'react'
 import DetailBox from './DetailBox';
 import ModalWeather from './ModalWeather';
 
-export default function UserCard(props: User) {
-    const { name, gender, email, picture, location } = props;
+type Props = {
+    user: User;
+    type?: "random" | "saved";
+}
+
+export default function UserCard({ user, type }: Props) {
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const { name, gender, email, picture, location, _id } = user;
 
     const hangleOpen = () => {
         setIsOpenModal(!isOpenModal);
@@ -19,12 +24,24 @@ export default function UserCard(props: User) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(props),
+                body: JSON.stringify(user),
             });
             const data = await response.json();
             console.log("User saved:", data);
         } catch (error) {
             console.error("Error saving user:", error);
+        }
+    }
+
+    const deleteUser = async () => {
+        try {
+            const response = await fetch(`/api/users/user?id=${_id}`, {
+                method: "DELETE",
+            });
+            const data = await response.json();
+            console.log("User deleted:", data);
+        } catch (error) {
+            console.error("Error deleting user:", error);
         }
     }
 
@@ -46,16 +63,29 @@ export default function UserCard(props: User) {
                 <DetailBox title="Email" value={email} />
                 <DetailBox title="Gender" value={gender} />
             </div>
-            <div className="flex gap-4">
-                <button
-                    onClick={saveUser}
-                    className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer"
-                >
-                    Save
-                </button>
+            <div className={`flex gap-4 ${type === "saved" ? "flex-row-reverse" : ""}`}>
+                {
+                    type !== "saved" ?
+                        (
+                            <button
+                                onClick={saveUser}
+                                className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer hover:bg-white/20 transition"
+                            >
+                                Save
+                            </button>
+                        ) :
+                        (
+                            <button
+                                onClick={deleteUser}
+                                className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer hover:bg-white/20 transition"
+                            >
+                                Delete
+                            </button>
+                        )
+                }
                 <button
                     onClick={hangleOpen}
-                    className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer"
+                    className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer hover:bg-white/20 transition"
                 >
                     Weather
                 </button>

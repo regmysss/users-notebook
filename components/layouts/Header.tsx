@@ -9,7 +9,7 @@ export default function Header() {
             className="w-full flex items-center justify-between h-16 max-sm:justify-center"
         >
             <Link href={PAGES.HOME}
-                className="font-extrabold text-2xl max-sm:hidden"
+                className={`font-extrabold text-2xl max-sm:hidden`}
             >
                 UsersNotebook
             </Link>
