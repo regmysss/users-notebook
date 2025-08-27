@@ -12,6 +12,22 @@ export default function UserCard(props: User) {
         setIsOpenModal(!isOpenModal);
     }
 
+    const saveUser = async () => {
+        try {
+            const response = await fetch("/api/users/user", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(props),
+            });
+            const data = await response.json();
+            console.log("User saved:", data);
+        } catch (error) {
+            console.error("Error saving user:", error);
+        }
+    }
+
     return (
         <div className="flex flex-col items-center gap-4 w-full p-5 border border-white/30 rounded-lg bg-white/10">
             <div>
@@ -31,12 +47,15 @@ export default function UserCard(props: User) {
                 <DetailBox title="Gender" value={gender} />
             </div>
             <div className="flex gap-4">
-                <button className="w-24 py-1 rounded-lg border border-white/30 bg-white/10">
+                <button
+                    onClick={saveUser}
+                    className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer"
+                >
                     Save
                 </button>
                 <button
                     onClick={hangleOpen}
-                    className="w-24 py-1 rounded-lg border border-white/30 bg-white/10"
+                    className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer"
                 >
                     Weather
                 </button>

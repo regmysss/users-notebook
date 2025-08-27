@@ -1,7 +1,5 @@
+import SavedUsers from "./SavedUsers";
+
 export default function Home() {
-  return (
-    <main>
-      test
-    </main>
-  );
+  return (<SavedUsers />);
 }

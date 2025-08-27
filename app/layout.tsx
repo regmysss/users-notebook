@@ -30,10 +30,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <article
-          className="min-h-full flex flex-col justify-between items-center max-w-[1000px] mx-auto"
+          className="min-h-full flex flex-col justify-between max-w-[1000px] mx-auto"
         >
           <Header />
-          <main className="w-full grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-5">
+          <main className="flex-1 grid items-start grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-5">
             {children}
           </main>
           <Footer />

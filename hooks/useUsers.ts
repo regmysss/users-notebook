@@ -14,5 +14,6 @@ export const useUsers = (url: string) => {
         }
     };
 
+
     return { users, fetchUsers };
 }
