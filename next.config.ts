@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "api.open-meteo.com",
       },
+      {
+        protocol: "https",
+        hostname: "users-notebook.vercel.app",
+      }
     ],
   }
 };
