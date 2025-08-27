@@ -55,6 +55,7 @@ export default function UserCard({ user, type }: Props) {
                     height={96}
                     priority
                     className="rounded-full object-cover"
+                    unoptimized
                 />
                 <h2 className="text-xl font-bold text-center mt-1">{name.first}</h2>
             </div>
