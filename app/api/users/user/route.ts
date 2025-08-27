@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     const results = await req.json();
-    console.log(results);
 
     await db();
     const createUser = await User.create(results);

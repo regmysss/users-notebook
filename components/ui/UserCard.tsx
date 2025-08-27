@@ -31,12 +31,12 @@ export default function UserCard(props: User) {
     return (
         <div className="flex flex-col items-center gap-4 w-full p-5 border border-white/30 rounded-lg bg-white/10">
             <div>
-                <Image
+                <img
                     src={picture.large}
                     alt={name.first}
-                    width={96}
-                    height={96}
-                    priority
+                    // width={96}
+                    // height={96}
+                    // priority
                     className="rounded-full object-cover"
                 />
                 <h2 className="text-xl font-bold text-center mt-1">{name.first}</h2>

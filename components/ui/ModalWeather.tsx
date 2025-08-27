@@ -33,7 +33,6 @@ export default function ModalWeather(props: ModalWeatherProps) {
             });
             const data = await response.json();
             setWeatherData(data);
-            console.log(data);
         }
 
         fetchWeather();
