@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
   description: "An application to look for users from an external API and save them to a database.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/logo.png",
   },
   keywords: [
     "Next.js",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "UsersNotebook",
     images: [
       {
-        url: "/og-image.png",
+        url: "/logo.png",
         alt: "UsersNotebook",
       },
     ],
