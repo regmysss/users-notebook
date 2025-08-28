@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import DetailBox from './DetailBox';
 import Image from 'next/image';
 import { getIconByWeatherCode } from '@/utils/getIconByWeatherCode';
@@ -23,6 +23,13 @@ export default function ModalWeather(props: ModalWeatherProps) {
     const { latitude, longitude, hangleOpen, name } = props;
     const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
     const [error, setError] = useState<string>("");
+
+    useLayoutEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        }
+    }, []);
 
     useEffect(() => {
         const fetchWeather = async () => {
