@@ -7,13 +7,15 @@ export async function POST(req: Request) {
 
     try {
         await db();
-        await User.create(results);
+        const newUser = await User.create(results);
 
-        return NextResponse.json({ message: "User created" }, { status: 201 });
+        if (!newUser)
+            return NextResponse.json({ message: "Failed to create user!" }, { status: 400 });
+
+        return NextResponse.json({ message: "User created!" });
     } catch (error) {
-        return NextResponse.json({ message: "Error creating user", error }, { status: 500 });
+        return NextResponse.json({ message: "Error creating user!", error }, { status: 500 });
     }
-
 }
 
 export async function DELETE(req: NextRequest) {
@@ -23,13 +25,11 @@ export async function DELETE(req: NextRequest) {
         await db();
         const deletedUser = await User.findByIdAndDelete(id);
 
-        if (!deletedUser) {
-            return NextResponse.json({ message: "User not found" }, { status: 404 });
-        }
+        if (!deletedUser)
+            return NextResponse.json({ message: "User not found!" }, { status: 404 });
 
-        return NextResponse.json({ message: "User deleted", user: deletedUser });
+        return NextResponse.json({ message: "User deleted!" });
     } catch (error) {
-        return NextResponse.json({ message: "Error deleting user", error }, { status: 500 });
+        return NextResponse.json({ message: "Error deleting user!", error }, { status: 500 });
     }
-
 }

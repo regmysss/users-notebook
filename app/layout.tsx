@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
+import { ToashProvider } from "@/providers/ToashProvider";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://users-notebook.vercel.app/"),
@@ -56,7 +57,9 @@ export default function RootLayout({
         >
           <Header />
           <main className="flex-1 flex flex-col items-center py-5">
-            {children}
+            <ToashProvider>
+              {children}
+            </ToashProvider>
           </main>
           <Footer />
         </article>

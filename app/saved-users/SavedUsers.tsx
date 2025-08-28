@@ -4,12 +4,12 @@ import UserList from "@/components/ui/UserList";
 import { useUsers } from "@/hooks/useUsers";
 
 export default function SavedUsers() {
-    const { users, setUsers } = useUsers("/api/users?type=saved");
+    const { users, setUsers, isLoading } = useUsers("/api/users?type=saved");
 
-    if (!users)
+    if (isLoading || !users)
         return (<Loader />);
 
     return (
-        <UserList users={users} type="saved" setUsers={setUsers} />
+        <UserList users={users!} type="saved" setUsers={setUsers} />
     )
 }

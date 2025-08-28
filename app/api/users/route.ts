@@ -10,12 +10,18 @@ export async function GET(req: NextRequest) {
             await db();
             const users = await User.find();
 
+            if (!users)
+                return NextResponse.json({ message: "No users found!" }, { status: 404 });
+
             return NextResponse.json({ results: users });
         }
         else {
             const response = await fetch('https://randomuser.me/api/?results=9');
-            const data = await response.json();
 
+            if (!response.ok)
+                return NextResponse.json({ message: "Failed to fetch users!" }, { status: response.status });
+
+            const data = await response.json();
             return NextResponse.json(data);
         }
     }

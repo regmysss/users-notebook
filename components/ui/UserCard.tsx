@@ -5,6 +5,7 @@ import DetailBox from './DetailBox';
 import ModalWeather from './ModalWeather';
 import Loader from './Loader';
 import CustomButton from './CustomButton';
+import { useToash } from '@/hooks/useToash';
 
 type Props = {
     user: User;
@@ -16,6 +17,7 @@ export default function UserCard({ user, type, setUsers }: Props) {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { name, gender, email, picture, location, _id } = user;
+    const toash = useToash();
 
     const hangleOpen = () => {
         setIsOpenModal(!isOpenModal);
@@ -32,9 +34,16 @@ export default function UserCard({ user, type, setUsers }: Props) {
                 body: JSON.stringify(user),
             });
             const data = await response.json();
-            console.log("User saved:", data);
+
+            if (!response.ok)
+                throw new Error(data.message || "Failed to save user!")
+
+            toash?.open(data.message);
         } catch (error) {
-            console.error("Error saving user:", error);
+            if (error instanceof Error)
+                toash?.open(error.message, "error");
+            else
+                toash?.open("An unknown error occurred while saving the user.", "error");
         }
         finally {
             setIsLoading(false);
@@ -48,13 +57,17 @@ export default function UserCard({ user, type, setUsers }: Props) {
                 method: "DELETE",
             });
             const data = await response.json();
-            console.log("User deleted:", data);
-            if (response.ok) {
-                setUsers!(prev => prev ? prev.filter(u => u._id !== _id) : null);
-            }
-            setIsLoading(false);
+
+            if (!response.ok)
+                throw new Error(data.message || "Failed to delete user!");
+
+            setUsers!(prev => prev ? prev.filter(u => u._id !== _id) : null);
+            toash?.open(data.message);
         } catch (error) {
-            console.error("Error deleting user:", error);
+            if (error instanceof Error)
+                toash?.open(error.message, "error");
+            else
+                toash?.open("An unknown error occurred while deleting the user.", "error");
         }
         finally {
             setIsLoading(false);
@@ -104,7 +117,12 @@ export default function UserCard({ user, type, setUsers }: Props) {
             </div>
             {
                 isOpenModal &&
-                <ModalWeather latitude={location.coordinates.latitude} longitude={location.coordinates.longitude} hangleOpen={hangleOpen} />
+                <ModalWeather
+                    latitude={location.coordinates.latitude}
+                    longitude={location.coordinates.longitude}
+                    hangleOpen={hangleOpen}
+                    name={name.first}
+                />
             }
         </div>
     )

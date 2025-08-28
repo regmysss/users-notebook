@@ -10,9 +10,10 @@ export default function LookForUsers() {
     if (isLoading || !users)
         return (<Loader />);
 
+
     return (
         <>
-            <UserList users={users} />
+            <UserList users={users!} />
             <CustomButton callback={fetchUsers} className="w-40 h-10 mt-10">
                 Refresh users
             </CustomButton>

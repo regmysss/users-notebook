@@ -9,3 +9,28 @@ body {
 body {
   @apply bg-[#010409] px-5 py-0 text-white;
 }
+
+@theme {
+  --animate-slidein: slidein 0.35s;
+
+  @keyframes slidein {
+    0% {
+      transform: translateX(100%);
+    }
+
+    ,
+    60% {
+      transform: translateX(-15%);
+    }
+
+    ,
+    80% {
+      transform: translateX(5%);
+    }
+
+    ,
+    90% {
+      transform: translateX(0%);
+    }
+  }
+}
