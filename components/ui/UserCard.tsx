@@ -3,14 +3,18 @@ import Image from 'next/image';
 import React, { useState } from 'react'
 import DetailBox from './DetailBox';
 import ModalWeather from './ModalWeather';
+import Loader from './Loader';
+import CustomButton from './CustomButton';
 
 type Props = {
     user: User;
     type?: "random" | "saved";
+    setUsers?: React.Dispatch<React.SetStateAction<User[] | null>>;
 }
 
-export default function UserCard({ user, type }: Props) {
+export default function UserCard({ user, type, setUsers }: Props) {
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { name, gender, email, picture, location, _id } = user;
 
     const hangleOpen = () => {
@@ -19,6 +23,7 @@ export default function UserCard({ user, type }: Props) {
 
     const saveUser = async () => {
         try {
+            setIsLoading(true);
             const response = await fetch("/api/users/user", {
                 method: "POST",
                 headers: {
@@ -31,17 +36,28 @@ export default function UserCard({ user, type }: Props) {
         } catch (error) {
             console.error("Error saving user:", error);
         }
+        finally {
+            setIsLoading(false);
+        }
     }
 
     const deleteUser = async () => {
         try {
+            setIsLoading(true);
             const response = await fetch(`/api/users/user?id=${_id}`, {
                 method: "DELETE",
             });
             const data = await response.json();
             console.log("User deleted:", data);
+            if (response.ok) {
+                setUsers!(prev => prev ? prev.filter(u => u._id !== _id) : null);
+            }
+            setIsLoading(false);
         } catch (error) {
             console.error("Error deleting user:", error);
+        }
+        finally {
+            setIsLoading(false);
         }
     }
 
@@ -68,28 +84,23 @@ export default function UserCard({ user, type }: Props) {
                 {
                     type !== "saved" ?
                         (
-                            <button
-                                onClick={saveUser}
-                                className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer hover:bg-white/20 transition"
+                            <CustomButton
+                                callback={saveUser}
                             >
-                                Save
-                            </button>
+                                {isLoading ? <Loader size={18} /> : "Save"}
+                            </CustomButton>
                         ) :
                         (
-                            <button
-                                onClick={deleteUser}
-                                className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer hover:bg-white/20 transition"
+                            <CustomButton
+                                callback={deleteUser}
                             >
-                                Delete
-                            </button>
+                                {isLoading ? <Loader size={18} /> : "Delete"}
+                            </CustomButton>
                         )
                 }
-                <button
-                    onClick={hangleOpen}
-                    className="w-24 py-1 rounded-lg border border-white/30 bg-white/10 cursor-pointer hover:bg-white/20 transition"
-                >
+                <CustomButton callback={hangleOpen}>
                     Weather
-                </button>
+                </CustomButton>
             </div>
             {
                 isOpenModal &&
