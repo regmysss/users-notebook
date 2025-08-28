@@ -39,7 +39,7 @@ export function ToashProvider({ children }: ToashProviderProps) {
         <ToashContext.Provider value={contextValue}>
             {children}
             <div
-                className="fixed top-5 right-5 flex flex-col gap-2"
+                className="fixed top-16 right-5 flex flex-col gap-2"
             >
                 {
                     toashs && toashs.map((toash) => (
